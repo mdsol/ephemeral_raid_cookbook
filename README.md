@@ -72,9 +72,9 @@ While we recommend you retain most of the default behaviour, your needs may diff
 {
   "ec2": {
     "ephraid": {
-      "mountpoint": "/dolphindata"
-      "fstype": "ext4"
-      "level": "1"
+      "mountpoint": "/navaldolphin",
+      "fstype": "ext4",
+      "level": "1",
       "owner": "johnnymnemonic"
     }
   }
