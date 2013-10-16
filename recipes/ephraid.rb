@@ -23,13 +23,13 @@
 # Which was in turn modeled after the following :
 # https://github.com/riptano/CassandraClusterAMI/blob/master/.startcassandra.py
 
-# Remove EC2 default /mnt from fstab, notifying the destructive parts to run.
+# Unmount the EC2 default /mnt
 mount "/mnt" do
   device "/dev/xvdb"
   action :umount
 end
 
-# Remove EC2 default /mnt from fstab, notifying the destructive parts to run.
+# Remove EC2 default /mnt from fstab
 mount "/mnt" do
   device "/dev/xvdb"
   action :disable
