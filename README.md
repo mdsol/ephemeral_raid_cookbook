@@ -75,7 +75,7 @@ While we recommend you retain most of the default behaviour, your needs may diff
       "mountpoint": "/dolphindata"
       "fstype": "ext4"
       "level": "1"
-      "owner": "johnnymemnonic"
+      "owner": "johnnymnemonic"
     }
   }
 }
@@ -94,6 +94,6 @@ Authors
 Special Thanks
 ==============
 
-* This was built on the shoulds of giants such as Mike Heffner <mike@librato.com> who originated the original recipe provided significant suggestions for improvement.
+* This cookbook was built on the shoulders of giants such as Mike Heffner <mike@librato.com> who originated the original recipe provided significant suggestions for improvement.
 
 Copyright: 2013–2013 Medidata Solutions, Inc.
