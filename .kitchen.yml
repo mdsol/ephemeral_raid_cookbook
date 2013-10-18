@@ -23,5 +23,5 @@ platforms:
 
 suites:
 - name: default
-  run_list: ["recipe[ec2-ephraid]"]
+  run_list: ["recipe[ephemeral-raid]"]
   attributes: {}

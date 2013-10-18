@@ -1,11 +1,8 @@
-# Since the raid disks are ephemeral there is no point in other types of raid.
-default[:ec2][:ephraid][:level] = 0
-default[:ec2][:ephraid][:fstype] = "xfs"
-default[:ec2][:ephraid][:chunk_size] = 256
-default[:ec2][:ephraid][:read_ahead] = 512
-default[:ec2][:ephraid][:options] = "defaults,nobootwait,noatime"
-default[:ec2][:ephraid][:device] = "/dev/md0"
-default[:ec2][:ephraid][:owner] = "root"
-default[:ec2][:ephraid][:group] = "root"
-default[:ec2][:ephraid][:mode] = "775"
-default[:ec2][:ephraid][:mount_point] = "/mnt"
+# Since these are ephemeral devices there is perhaps no point in other types of raid, but we go ahead and offer.
+default[:ephemeral][:raid][:level] = 0
+default[:ephemeral][:raid][:spares] = 0
+default[:ephemeral][:raid][:chunk_size] = 256
+default[:ephemeral][:raid][:read_ahead] = 512
+default[:ephemeral][:raid][:device] = "/dev/md0"
+default[:ephemeral][:raid][:creation_attempts] = 3
+default[:ephemeral][:raid][:force] = false

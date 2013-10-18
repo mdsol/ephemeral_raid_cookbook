@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ec2-ephraid
+# Cookbook Name:: ephemeral-raid
 # Recipe:: install
 #
 # Copyright 2013 Medidata Solutions Worldwide
@@ -17,34 +17,40 @@
 # limitations under the License.
 #
 
-# This recipe/cookbook expects to be run very early in the runlist because other software might install on paths and devices it creates.
+# This cookbook expects to be run very early in the runlist because other software might install on paths and devices it creates.
 
-# The mdadm package is used to create the array.
-package "mdadm" do
-  action :install
-  ignore_failure true
-end
+if !node.attribute?('cloud') || !node['cloud'].attribute?('provider')
 
-# We try to correctly prefix the tools we will need
-if node[:ec2][:ephraid][:fstype] =~ /ext/
-  # ext filesystems have tools called eNfsprogs or similar which is really silly but just the way it is - other filesystems are more sensible.
-  fsversion = node[:ec2][:ephraid][:fstype].gsub!(/\D/, "") 
-  toolprefix = ::File.join("e", fsversion, "fs")
+  log "Not running on an OHAI-recognised cloud. Going no further."
+
 else
-  toolprefix = node[:ec2][:ephraid][:fstype]
-end
 
-# If we're going with a special $fstype, we probably need some utilities to make it work, so we shall attempt to install them through fuzzy suffixing. The ignore_failure is key here since many of these package name combinations will not exist.
-[ "", "progs" , "-progs", "tools", "-tools", "progs-devel" ,"-progs-devel", "dump", "libs", "libs-dev", "-devel", "devel"  ].each do |fuzzysuffix|
-  package "#{toolprefix}#{fuzzysuffix}" do
-    action :install
-    ignore_failure true
-    not_if "which mkfs.#{node[:ec2][:ephraid][:fstype]}"
+  # Obtain the available ephemeral devices. See "libraries/helper.rb" for the definition of
+  # "get_ephemeral_devices" method.
+  ephemeral_devices = EphemeralDevices::Helper.get_ephemeral_devices(node.cloud.provider, node)
+
+  if ephemeral_devices.empty?
+   
+    # No devices found 
+
+    log "No Ephemeral devices found"
+
+  elsif ( ephemeral_devices.length >= 2 ) || ( ephemeral_devices.length == 1 && node[:ephemeral][:raid][:force] = true )
+
+    # We have more than one, or we have one and we are forcing it.
+
+    log "Attempting to create array out of : #{ephemeral_devices.inspect}"
+
+    package "mdadm"
+
+    include_recipe "ephemeral-raid::cleanup" do
+      only_if "which umount && which parted && which dd && which mdadm && which blockdev"
+    end
+
+    include_recipe "ephemeral-raid::makeraid" do
+      only_if "which mdadm && which blockdev"
+    end
+
   end
-end
 
-# We include the recipe that actually does things if the commands it needs are present and accounted for in the path.
-include_recipe "ec2-ephraid::ephraid" do
-  only_if "which mdadm"
-  only_if "which mkfs.#{node[:ec2][:ephraid][:fstype]}"
 end

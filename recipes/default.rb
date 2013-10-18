@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ec2-ephraid
+# Cookbook Name:: ephemeral-raid
 # Recipe:: default
 #
 # Copyright 2013 Medidata Solutions Worldwide
@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe "ec2-ephraid::install"
+include_recipe "ephemeral-raid::install"

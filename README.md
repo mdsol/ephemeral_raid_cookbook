@@ -1,22 +1,22 @@
 Description
 ===========
 
-This cookbook exists to automatically make and mount raid arrays using all the Ephemeral EC2 disks it can find present to the system it runs on.
+This cookbook exists to automatically make and mount raid arrays using all the Ephemeral block devices (aka "disks", but we cannot know for sure what they are) it can find present to the system it runs on.
 
-These disks typically have higher performance than EBS volumes and due to their Ephemeral nature are ideal for high-IO throw-away work or clustered loads that run with sufficient levels of distributed data redundancy: i.e. multi-AZ or multi-region data replication.
+These block devices typically have higher performance than EBS volumes and due to their Ephemeral nature are ideal for high-IO throw-away work or clustered loads that run with sufficient levels of distributed data redundancy: i.e. multi-AZ or multi-region data replication.
 
-These disks also happen to be included with the instance you choose - at no extra cost.
+These block devices are also typically included with the instance you choose - at no extra cost.
 
-Amazon are sneaky however, since only one of these disks are mountable by default when you launch an instance without requisite device mappings.
+Cloud providers may be sneaky however, since only one of these block devices are available by default when you launch an instance without requisite block device mappings.
 
-See the Usage section for further info on how to get the drives to show up.
+See the Usage section for further info on how to get the drives to show up in one example.
 
 Use Case
 ========
 
-See http://aws.amazon.com/ec2/instance-types/ for an up to date list of how many Ephemeral disks there are for each instance type - these disks are otherwise referred to as 'Instance Storage'.
+For EC2: See http://aws.amazon.com/ec2/instance-types/ for an up to date list of how many ephemeral block devices/disks there are for each instance type - these devices/disks are otherwise referred to as 'Instance Storage'.
 
-This recipe is only really worth using if there is more than one disk available. At the time of writing the instances that this cookbook suits being run upon are:
+This recipe is only really worth using if there is more than one block device available. At the time of writing the instances that this cookbook suits being run upon are:
 
 * `m1.large` 2 x 420 HDD
 * `m1.xlarge` 4 x 420 HDD
@@ -31,9 +31,12 @@ This recipe is only really worth using if there is more than one disk available.
 Default Behaviour
 =================
 
-By default this cookbook grabs all the disks it finds, makes a raid 0 array out of them, formats it with `xfs` and remounts it at `/mnt`.
+By default this cookbook grabs all the ephemeral block devices it finds, cleans them up and then creates a raid level 0 array out of them with mdraid.
 
-We consider this sensible behaviour given the type of workload this cookbook is aimed at and the nature of the disks.
+Suggested Use Pattern
+=====================
+
+This cookbook should be used with the [filesystem] cookbook. 
 
 Requirements
 ============
@@ -42,7 +45,6 @@ Requirements
 
 #### packages
 
-* `${fstype}progs` - We need mkfs.$fstype if we are going to use whatever $fstype you choose.
 * `mdadm` - This is needed for forming the raid device.
 
 Recipes
@@ -50,7 +52,8 @@ Recipes
 
 * `default.rb` : A dummy recipe pointing to install.rb
 * `install.rb` : Installs everything by calling the rest of the recipes in the right order i.e. once packages have been installed.
-* `ephraid.rb` : Clears out the available disks, creates the raid device with them, updates the fstab, creats the mountpoint and mounts the new device at that mountpoint.
+* `cleanup.rb` : Unmounts devices and clears partition tables.
+* `makeraid.rb` : Creates the raid device.
 
 Attributes
 ==========
@@ -60,22 +63,19 @@ See the contents of `attributes/default.rb` where there are accurate comments an
 Usage
 =====
 
-Just include `ec2-ephraid` in your role's `run_list`.
+Just include `ephemeral-raid` in your role's `run_list`.
 
-And then, when you run your instances or create your autoscaling configuration, in the following case for `m1.xlarge` instances, you must specify the four free emphemeral disks like so:
+And then, when you run your instances or create your autoscaling configuration, in the following case for `m1.xlarge` instances, you must specify the four free emphemeral devices like so:
 
-`--block-device-mapping "/dev/xvdb=ephemeral0","/dev/xvdc=ephemeral1","/dev/xvdd=ephemeral2","/dev/xvde=ephemeral3"`
+`--block-device-mapping "/dev/xvdb=ephemeral0,/dev/xvdc=ephemeral1,/dev/xvdd=ephemeral2,/dev/xvde=ephemeral3"`
 
 While we recommend you retain most of the default behaviour, your needs may differ so consider the following example:
 
 ```JSON
 {
-  "ec2": {
-    "ephraid": {
-      "mountpoint": "/navaldolphin",
-      "fstype": "ext4",
+  "ephemeral": {
+    "raid": {
       "level": "1",
-      "owner": "johnnymnemonic"
     }
   }
 }
@@ -84,7 +84,7 @@ While we recommend you retain most of the default behaviour, your needs may diff
 Development
 ===========
 
-See the [Github page][https://github.com/mdsol/ec2_ephraid_cookbook]
+See the [Github page][https://github.com/mdsol/ephemeral_raid_cookbook]
 
 Authors
 =======
@@ -95,5 +95,6 @@ Special Thanks
 ==============
 
 * This cookbook was built on the shoulders of giants such as Mike Heffner <mike@librato.com> who originated the original recipe provided significant suggestions for improvement.
+* The ephemeral devices helper was taken from Apache 2.0 licensed work by RightScale. Their quality is awesome.
 
 Copyright: 2013–2013 Medidata Solutions, Inc.

@@ -1,10 +1,10 @@
-# CHANGELOG for ec2-ephraid
+# CHANGELOG for ephemeral-raid
 
-This file is used to list changes made in each version of ec2-ephraid.
+This file is used to list changes made in each version of ephemeral-raid.
 
 ## 0.1.0:
 
-* Initial release of ec2-ephraid
+* Initial release of ephemeral-raid
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
