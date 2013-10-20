@@ -18,10 +18,9 @@
 # 
 # Notes:
 #
-# This helper taken directly from work by RightScale, also under Apache 2.0 License
+# This helper started life as work by RightScale, also under Apache 2.0 License
 # https://github.com/rightscale-cookbooks/ephemeral_lvm/tree/white_13_05_acu114901_implement_ephemeral_library_cookbook
 #
-
 
 module EphemeralDevices
   module Helper
