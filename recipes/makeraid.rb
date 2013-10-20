@@ -39,7 +39,7 @@ ruby_block "create_array_of_ephemeral_devices" do
     # Wait for devices to settle.
     system("sleep 3")
 
-    # We may be forcing things on nodes with single ephemeral devices.
+    # We may be forcing creation.
     if node[:ephemeral][:raid][:force]
       creation_args << '--force'
     end
