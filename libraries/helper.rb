@@ -51,7 +51,7 @@ module EphemeralDevices
 
         # Servers running on Xen hypervisor require the block device to be in /dev/xvdX instead of /dev/sdX
         if node.attribute?('virtualization') && node['virtualization']['system'] == "xen"
-          puts "Mapping for devices: #{ephemeral_devices.inspect}"
+          puts "Mapping for Ephemeral Devices: #{ephemeral_devices.inspect}"
           ephemeral_devices = EphemeralDevices::Helper.fix_device_mapping(
             ephemeral_devices,
             node['block_device'].keys

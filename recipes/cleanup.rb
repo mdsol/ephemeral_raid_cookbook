@@ -60,6 +60,6 @@ ruby_block "unmount_and_zero_superblocks_of_ephemeral_devices" do
   end
   action :create
   not_if { File.exists?(node[:ephemeral][:raid][:device]) } 
-  notifies :create, "ruby_block[create_array_of_ephemeral_devices]", :immediately
+  notifies :create, "mdadm[#{node[:ephemeral][:raid][:device]}]", :immediately
 end
 
