@@ -1,10 +1,10 @@
-# CHANGELOG for ephemeral-raid
+# CHANGELOG for ephemeral_raid
 
-This file is used to list changes made in each version of ephemeral-raid.
+This file is used to list changes made in each version of ephemeral_raid.
 
 ## 0.1.0:
 
-* Initial release of ephemeral-raid
+* Initial release of ephemeral_raid
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.

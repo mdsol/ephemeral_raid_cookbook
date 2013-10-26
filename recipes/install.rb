@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ephemeral-raid
+# Cookbook Name:: ephemeral_raid
 # Recipe:: install
 #
 # Copyright 2013 Medidata Solutions Worldwide
@@ -43,11 +43,11 @@ else
 
     package "mdadm"
 
-    include_recipe "ephemeral-raid::cleanup" do
+    include_recipe "ephemeral_raid::cleanup" do
       only_if "which umount && which parted && which dd && which mdadm && which blockdev"
     end
 
-    include_recipe "ephemeral-raid::makeraid" do
+    include_recipe "ephemeral_raid::makeraid" do
       only_if "which mdadm && which blockdev"
     end
 

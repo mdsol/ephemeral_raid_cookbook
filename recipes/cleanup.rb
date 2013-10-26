@@ -1,6 +1,6 @@
 #
 # Author:: Alex Trull (<atrull@mdsol.com>)
-# Cookbook Name:: ephemeral-raid
+# Cookbook Name:: ephemeral_raid
 # Recipe:: cleanup 
 #
 # Copyright 2013, Medidata Worldwide

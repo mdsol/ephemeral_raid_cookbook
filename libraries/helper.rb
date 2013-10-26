@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ephemeral-raid
+# Cookbook Name:: ephemeral_raid
 # Library:: helper
 #
 # Copyright (C) 2013 Medidata Worldwide

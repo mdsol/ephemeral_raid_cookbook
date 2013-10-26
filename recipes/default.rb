@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ephemeral-raid
+# Cookbook Name:: ephemeral_raid
 # Recipe:: default
 #
 # Copyright 2013 Medidata Solutions Worldwide
@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe "ephemeral-raid::install"
+include_recipe "ephemeral_raid::install"

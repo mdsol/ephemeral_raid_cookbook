@@ -23,5 +23,5 @@ platforms:
 
 suites:
 - name: default
-  run_list: ["recipe[ephemeral-raid]"]
+  run_list: ["recipe[ephemeral_raid]"]
   attributes: {}

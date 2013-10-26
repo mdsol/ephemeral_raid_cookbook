@@ -11,6 +11,8 @@ Cloud providers may be sneaky however, since only one of these block devices are
 
 See the Usage section for further info on how to get the drives to show up in one example.
 
+This cookbook does not create filesystems, but there is a cookbook out there that does just that : the filesystem cookbook.
+
 Use Case
 ========
 
@@ -45,7 +47,7 @@ Requirements
 
 #### packages
 
-* `mdadm` - This is needed for forming the raid device.
+* `mdadm` - This is needed for forming the raid device. We use it via the chef provider.
 
 Recipes
 =======
@@ -53,7 +55,7 @@ Recipes
 * `default.rb` : A dummy recipe pointing to install.rb
 * `install.rb` : Installs everything by calling the rest of the recipes in the right order i.e. once packages have been installed.
 * `cleanup.rb` : Unmounts devices and clears partition tables.
-* `makeraid.rb` : Creates the raid device.
+* `makeraid.rb` : Creates the raid device, using the mdadm provider.
 
 Attributes
 ==========
@@ -63,23 +65,32 @@ See the contents of `attributes/default.rb` where there are accurate comments an
 Usage
 =====
 
-Just include `ephemeral-raid` in your role's `run_list`.
-
-And then, when you run your instances or create your autoscaling configuration, in the following case for `m1.xlarge` instances, you must specify the four free emphemeral devices like so:
+When you run your instances or create your autoscaling configuration, in the following case for EC2 `m1.xlarge` instances, you must specify the four free emphemeral devices like so:
 
 `--block-device-mapping "/dev/xvdb=ephemeral0,/dev/xvdc=ephemeral1,/dev/xvdd=ephemeral2,/dev/xvde=ephemeral3"`
 
-While we recommend you retain most of the default behaviour, your needs may differ so consider the following example:
+While we recommend you retain most of the default behaviour, your needs may differ so consider the following example, which includes filesystem creation:
 
-```JSON
+`run_list` ephemeral_raid, filesystem
+
+````JSON
 {
   "ephemeral": {
     "raid": {
-      "level": "1",
+      "level": "10",
+    }
+  },
+  "filesystems": { 
+    "raidfs": {
+      "device": "/dev/md0",
+      "mount": "/mnt",
+      "fstype": "xfs",
+      "optons": "noatime,nobarrier",
+      "mkfs_options": "-d sunit=128,swidth=2048"
     }
   }
 }
-```
+````
 
 Development
 ===========

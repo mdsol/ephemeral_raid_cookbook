@@ -1,4 +1,4 @@
-name             'ephemeral-raid'
+name             'ephemeral_raid'
 maintainer       'Medidata Solutions, Inc.'
 maintainer_email 'cookbooks@mdsol.com'
 license          'Apache 2.0'
