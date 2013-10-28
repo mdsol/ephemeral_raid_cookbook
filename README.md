@@ -1,7 +1,7 @@
 Description
 ===========
 
-This cookbook exists to automatically make and mount raid arrays using all the Ephemeral block devices (aka "disks", but we cannot know for sure what they are) it can find present to the system it runs on.
+This cookbook exists to automatically make a raid array using all the Ephemeral block devices (aka "disks", but we cannot know for sure what they are) it can find present to the system it runs on.
 
 These block devices typically have higher performance than EBS volumes and due to their Ephemeral nature are ideal for high-IO throw-away work or clustered loads that run with sufficient levels of distributed data redundancy: i.e. multi-AZ or multi-region data replication.
 
