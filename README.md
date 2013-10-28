@@ -1,9 +1,11 @@
 Description
 ===========
 
-This cookbook exists to automatically make a raid array using all the Ephemeral block devices (aka "disks", but we cannot know for sure what they are) it can find present to the system it runs on.
+This cookbook exists to automatically make a RAID array using all the Ephemeral block devices (aka "disks", but we cannot know for sure what they are) it can find present to the system it runs on.
 
-These block devices typically have higher performance than EBS volumes and due to their Ephemeral nature are ideal for high-IO throw-away work or clustered loads that run with sufficient levels of distributed data redundancy: i.e. multi-AZ or multi-region data replication.
+The cookbook's default RAID level is 0 - maximum performance with absolutely no redundancy. You must change the attribute to something else if you are worried about dataloss.
+
+The Ephemeral block devices typically have higher performance than other volumes and due to their Ephemeral nature are ideal for high-IO throw-away work or clustered loads that run with sufficient levels of distributed data redundancy: i.e. multi-AZ or multi-region data replication.
 
 These block devices are also typically included with the instance you choose - at no extra cost.
 
@@ -45,7 +47,9 @@ Requirements
 
 * A relatively recent common Linux distribution. This recipe is linux-only.
 
-#### packages
+* A cloud provider that Ohai recognises.
+
+* Two or more mapped Ephemeral block devices.
 
 * `mdadm` - This is needed for forming the raid device. We use it via the chef provider.
 
