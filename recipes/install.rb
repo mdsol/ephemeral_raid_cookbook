@@ -35,7 +35,7 @@ else
 
     log "Ephemeral devices not found"
 
-  elsif ( ephemeral_devices.length >= 2 ) || ( ephemeral_devices.length == 1 && node[:ephemeral][:raid][:force] = true )
+  elsif ( ephemeral_devices.length >= 2 ) || ( ephemeral_devices.length == 1 && node[:ephemeral][:raid][:force] == true )
 
     # We have more than one, or we have one and we are forcing it.
 
